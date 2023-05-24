@@ -1,0 +1,254 @@
+
+------------------------------------------------------------------------
+
+OBJECTIVE
+
+Upon initial inspection of the data, we can start thinking of some
+questions about it that we would want to answer.
+
+-   What is the overall sales trend?
+
+-   Which are the Top 10 products by sales?
+
+-   Which are the Most Selling Products?
+
+-   Which is the most preferred Ship Mode?
+
+-   Which are the Most Profitable Category and Sub-Category?
+
+------------------------------------------------------------------------
+
+    import pandas as pd
+
+    import matplotlib.pyplot as plt
+    %matplotlib inline
+
+    import seaborn as sns
+
+    df = pd.read_excel('superstore_sales.xlsx')
+
+    ---------------------------------------------------------------------------
+    ModuleNotFoundError                       Traceback (most recent call last)
+    File ~\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\compat\_optional.py:142, in import_optional_dependency(name, extra, errors, min_version)
+        141 try:
+    --> 142     module = importlib.import_module(name)
+        143 except ImportError:
+
+    File ~\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126, in import_module(name, package)
+        125         level += 1
+    --> 126 return _bootstrap._gcd_import(name[level:], package, level)
+
+    File <frozen importlib._bootstrap>:1206, in _gcd_import(name, package, level)
+
+    File <frozen importlib._bootstrap>:1178, in _find_and_load(name, import_)
+
+    File <frozen importlib._bootstrap>:1142, in _find_and_load_unlocked(name, import_)
+
+    ModuleNotFoundError: No module named 'openpyxl'
+
+    During handling of the above exception, another exception occurred:
+
+    ImportError                               Traceback (most recent call last)
+    Cell In[2], line 1
+    ----> 1 df = pd.read_excel('superstore_sales.xlsx')
+
+    File ~\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\excel\_base.py:478, in read_excel(io, sheet_name, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skiprows, nrows, na_values, keep_default_na, na_filter, verbose, parse_dates, date_parser, date_format, thousands, decimal, comment, skipfooter, storage_options, dtype_backend)
+        476 if not isinstance(io, ExcelFile):
+        477     should_close = True
+    --> 478     io = ExcelFile(io, storage_options=storage_options, engine=engine)
+        479 elif engine and engine != io.engine:
+        480     raise ValueError(
+        481         "Engine should not be specified when passing "
+        482         "an ExcelFile - ExcelFile already has the engine set"
+        483     )
+
+    File ~\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\excel\_base.py:1513, in ExcelFile.__init__(self, path_or_buffer, engine, storage_options)
+       1510 self.engine = engine
+       1511 self.storage_options = storage_options
+    -> 1513 self._reader = self._engines[engine](self._io, storage_options=storage_options)
+
+    File ~\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\io\excel\_openpyxl.py:548, in OpenpyxlReader.__init__(self, filepath_or_buffer, storage_options)
+        533 @doc(storage_options=_shared_docs["storage_options"])
+        534 def __init__(
+        535     self,
+        536     filepath_or_buffer: FilePath | ReadBuffer[bytes],
+        537     storage_options: StorageOptions = None,
+        538 ) -> None:
+        539     """
+        540     Reader using openpyxl engine.
+        541 
+       (...)
+        546     {storage_options}
+        547     """
+    --> 548     import_optional_dependency("openpyxl")
+        549     super().__init__(filepath_or_buffer, storage_options=storage_options)
+
+    File ~\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\compat\_optional.py:145, in import_optional_dependency(name, extra, errors, min_version)
+        143 except ImportError:
+        144     if errors == "raise":
+    --> 145         raise ImportError(msg)
+        146     return None
+        148 # Handle submodules: if we have submodule, grab parent module from sys.modules
+
+    ImportError: Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+
+    df.head()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[3], line 1
+    ----> 1 df.head()
+
+    NameError: name 'df' is not defined
+
+    df.tail()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[4], line 2
+          1 # Last five rows of the dataset
+    ----> 2 df.tail()
+
+    NameError: name 'df' is not defined
+
+    df.shape
+
+    (51290, 21)
+
+    df.columns
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[5], line 1
+    ----> 1 df.columns
+
+    NameError: name 'df' is not defined
+
+    df.info()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[6], line 1
+    ----> 1 df.info()
+
+    NameError: name 'df' is not defined
+
+    df.isna().sum()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[7], line 1
+    ----> 1 df.isna().sum()
+
+    NameError: name 'df' is not defined
+
+    df.describe().round()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[8], line 1
+    ----> 1 df.describe().round()
+
+    NameError: name 'df' is not defined
+
+    df['month_year'] = df['order_date'].apply(lambda x: x.strftime('%Y-%m'))
+
+    df_temp = df.groupby('month_year').sum()['sales'].reset_index()
+
+    plt.figure(figsize=(16, 5))
+    plt.plot(df_temp['month_year'], df_temp['sales'], color='#b80045')
+    plt.xticks(rotation='vertical', size=8)
+    plt.show()
+
+    ---------------------------------------------------------------------------
+    NameError                                 Traceback (most recent call last)
+    Cell In[9], line 2
+          1 plt.figure(figsize=(16, 5))
+    ----> 2 plt.plot(df_temp['month_year'], df_temp['sales'], color='#b80045')
+          3 plt.xticks(rotation='vertical', size=8)
+          4 plt.show()
+
+    NameError: name 'df_temp' is not defined
+
+    <Figure size 1600x500 with 0 Axes>
+
+    # Grouping products by sales
+    prod_sales = pd.DataFrame(df.groupby('product_name').sum()['sales'])
+
+    # Sorting the dataframe in descending order
+    prod_sales.sort_values(by=['sales'], inplace=True, ascending=False)
+
+    # Top 10 products by sales
+    prod_sales[:10]
+
+                                                             sales
+    product_name                                                  
+    Apple Smart Phone, Full Size                        86935.7786
+    Cisco Smart Phone, Full Size                        76441.5306
+    Motorola Smart Phone, Full Size                     73156.3030
+    Nokia Smart Phone, Full Size                        71904.5555
+    Canon imageCLASS 2200 Advanced Copier               61599.8240
+    Hon Executive Leather Armchair, Adjustable          58193.4841
+    Office Star Executive Leather Armchair, Adjustable  50661.6840
+    Harbour Creations Executive Leather Armchair, A...  50121.5160
+    Samsung Smart Phone, Cordless                       48653.4600
+    Nokia Smart Phone, with Caller ID                   47877.7857
+
+    # Grouping products by Quantity
+    best_selling_prods = pd.DataFrame(df.groupby('product_name').sum()['quantity'])
+
+    # Sorting the dataframe in descending order
+    best_selling_prods.sort_values(by=['quantity'], inplace=True, ascending=False)
+
+    # Most selling products
+    best_selling_prods[:10]
+
+                                           quantity
+    product_name                                   
+    Staples                                     876
+    Cardinal Index Tab, Clear                   337
+    Eldon File Cart, Single Width               321
+    Rogers File Cart, Single Width              262
+    Sanford Pencil Sharpener, Water Color       259
+    Stockwell Paper Clips, Assorted Sizes       253
+    Avery Index Tab, Clear                      252
+    Ibico Index Tab, Clear                      251
+    Smead File Cart, Single Width               250
+    Stanley Pencil Sharpener, Water Color       242
+
+    # Setting the figure size
+    plt.figure(figsize=(10, 8))
+
+    # countplot: Show the counts of observations in each categorical bin using bars
+    sns.countplot(x='ship_mode', data=df)
+
+    # Display the figure
+    plt.show()
+
+[]
+
+    # Grouping products by Category and Sub-Category
+    cat_subcat = pd.DataFrame(df.groupby(['category', 'sub_category']).sum()['profit'])
+
+    # Sorting the values
+    cat_subcat.sort_values(['category','profit'], ascending=False)
+
+                                        profit
+    category        sub_category              
+    Technology      Copiers       258567.54818
+                    Phones        216717.00580
+                    Accessories   129626.30620
+                    Machines       58867.87300
+    Office Supplies Appliances    141680.58940
+                    Storage       108461.48980
+                    Binders        72449.84600
+                    Paper          59207.68270
+                    Art            57953.91090
+                    Envelopes      29601.11630
+                    Supplies       22583.26310
+                    Labels         15010.51200
+                    Fasteners      11525.42410
+    Furniture       Bookcases     161924.41950
+                    Chairs        141973.79750
+                    Furnishings    46967.42550
+                    Tables        -64083.38870
